@@ -1,6 +1,10 @@
 dependencies
-* Formidable
-* Jade
-* Moment
-* Mongoose
-* node-static
+* Software
+  * node.js
+  * mongodb
+* node (use npm)
+  * Formidable
+  * Jade
+  * Moment
+  * Mongoose
+  * node-static
