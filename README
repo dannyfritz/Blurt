@@ -1,10 +1,10 @@
-dependencies
-* Software
-  * node.js
-  * mongodb
-* node (use npm)
-  * Formidable
-  * Jade
-  * Moment
-  * Mongoose
-  * node-static
+In order to run this you will need both Node.js and Mongodb installed.
+
+In addition, you will need various Node.js libraries.
+* Formidable
+* Jade
+* Moment
+* Mongoose
+* node-static
+
+You can install all of these by typing ```$npm install Formidable``` etc.
