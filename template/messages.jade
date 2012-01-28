@@ -1,0 +1,6 @@
+for message in messages
+  li(data-role="list-divider")
+    = time = moment(message.date).fromNow()
+  li
+    pre
+      = message.message
