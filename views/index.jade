@@ -1,0 +1,17 @@
+extends layout
+
+block append scripts
+	script(src="/js/blurt.js")
+
+block prepend less
+
+block content
+	h1.
+		#{title}
+	p#numberConnected.
+		
+	input#user(type="text", value="anonymous")
+	textarea#messageBox(onKeyPress="enterMessageBox(event);").
+	button(onclick="postMessage();").
+		Blurt it!
+	ul#messages(data-role="listview")

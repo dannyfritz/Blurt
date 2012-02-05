@@ -1,0 +1,17 @@
+!!! 5
+html
+	head
+		title.
+			#{title}
+		block less
+			link(rel="stylesheet", href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css")
+			link(rel="stylesheet/less", type="text/css", href="/less/main.less")
+			script(src="/js/less-1.2.1.min.js")
+		block scripts
+			script(src="https://raw.github.com/timrwood/moment/1.4.0/moment.min.js")
+			script(src="http://code.jquery.com/jquery-1.7.1.min.js")
+			script(src="/socket.io/socket.io.js")
+			script(src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js")
+	body
+		block content
+		include about
