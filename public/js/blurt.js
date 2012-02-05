@@ -11,6 +11,11 @@ function enterMessageBox(event) {
 	}
 };
 
+function clickButton() {
+	postMessage();
+	$("#messageBox").focus();
+}
+
 function clearMessageBox() {
 	$("#messageBox").val("");
 }
