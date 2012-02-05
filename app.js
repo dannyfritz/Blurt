@@ -19,17 +19,22 @@ require("./models").defineModels(mongoose);
 
 io = io.listen(app);
 
+var userCount = 0
+
 io.configure(function(){
 	io.set("log level", 2);
 })
 
 io.sockets.on("connection", function (socket) {
+	userCount += 1;
 	var now = new Date();
-	socket.broadcast.emit("userJoin", {date: now});
+	socket.broadcast.emit("userJoin", {date: now, count: userCount});
+	socket.emit("init", {count: userCount});
 
 	socket.on("disconnect", function (data) {
+		userCount -= 1;
 		var now = new Date();
-		socket.broadcast.emit("userLeft", {date: now})
+		socket.broadcast.emit("userLeft", {date: now, count: userCount})
 	});
 
 	socket.on("postMessage", function(data) {

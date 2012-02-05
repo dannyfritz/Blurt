@@ -3,6 +3,15 @@ var socket;
 setupSocket();
 setInterval(updateTimes, 1000);
 
+function updateHeader(count) {
+	if (count <=1) {
+		$("#header").html("Blurt!");
+	}
+	else {
+		$("#header").html("Blurt! " + count + " people connected.");
+	}
+}
+
 function enterMessageBox(event) {
 	if(event.which == 13 && !event.shiftKey) {
 		event.preventDefault();
@@ -35,12 +44,19 @@ function setupSocket() {
 	socket.on("userJoin", function (data) {
 		console.log("User Connected: ", data);
 		getUserStatus(data.date, 0);
+		updateHeader(data.count);
 	});
 
 	socket.on("userLeft", function (data) {
 		console.log("User Left: ", data);
 		getUserStatus(data.date, 1);
+		updateHeader(data.count);
 	});
+
+	socket.on("init", function(data) {
+		updateHeader(data.count);
+		//initial messages
+	})
 }
 
 function getUserDateString(user, date) {
@@ -96,9 +112,11 @@ function getMessage(message, user, date) {
 	$dateLi.attr("user", user)
 	$dateLi.html(getUserDateString(user, date));
 	var $messageLi = $("<li></li>");
-	var $messagePre = $("<pre></pre>");
-	$messagePre.html(message);
-	$messageLi.append($messagePre);
+	var $messageDiv = $("<div class=\"messages\"></div>")
+
+	linkify($messageDiv, message);
+
+	$messageLi.append($messageDiv);
 
 	$("#messages").prepend($messageLi).trigger("create");
 	$("#messages").prepend($dateLi).trigger("create");
