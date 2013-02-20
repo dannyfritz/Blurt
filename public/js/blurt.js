@@ -30,7 +30,9 @@ function clearMessageBox() {
 }
 
 function setupSocket() {
-	socket = io.connect();
+	socket = io.connect('', {
+		resource: "Blurt/socket.io"
+	});
 
 	socket.on("log", function (data) {
 		console.log("Log: ", data);

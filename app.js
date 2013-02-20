@@ -1,25 +1,22 @@
-
-// Module dependencies.
-
 var express = require("express")
+	, app = express()
+	, http = require('http')
 	, routes = require("./routes")
-	, io = require("socket.io")
+	, server = http.createServer(app)
 	, mongoose = require("mongoose")
-
-var app = module.exports = express.createServer();
-
+	, port = process.argv[2] ? process.argv[2] : 8892;
 
 // Mongoose
-
 mongoose.connect("mongodb://localhost/blurt");
 require("./models").defineModels(mongoose);
 
-
 // Socket
-
-io = io.listen(app);
-
+var io = require("socket.io").listen(server, { resource: '/Blurt/socket.io' });
 var userCount = 0
+
+// Start Server
+server.listen(port)
+//app.listen(port);
 
 io.configure(function(){
 	io.set("log level", 2);
@@ -50,38 +47,18 @@ io.sockets.on("connection", function (socket) {
 				user: data.user,
 				date: now})
 	});
-
 });
 
-
-// Configuration
-
+// Express
 app.configure(function(){
 	app.set("views", __dirname + "/views");
 	app.set("view engine", "jade");
 	app.set("view options", { layout: false });
-	app.use(express.bodyParser());
-	app.use(express.methodOverride());
-	app.use(app.router);
-	app.use(express.static(__dirname + "/public"));
+	app.use(function(req, res, next) {
+		console.log('%s %s', req.method, req.url);
+		next();
+	});
 });
-
-app.configure("development", function(){
-	app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
-	app.set("view options", { layout: false, pretty: true });
-});
-
-app.configure("production", function(){
-	app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
-});
-
 
 // Routes
-
-app.get("/", routes.index);
-
-
-// Start Server
-
-app.listen(8889);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.get("/:base/", routes.index );
